@@ -189,7 +189,9 @@ only admins can build. Planets are unprotected by default.
             else:
                 entities = entity_create.parse(data.data)
                 for entity in entities.entity:
-                    if entity.entity_type == EntityType.PROJECTILE:
+                    if entity.entity_type == EntityType.OBJECT or  entity.entity_type == EntityType.MONSTER or entity.entity_type == EntityType.ITEMDROP or entity.entity_type == EntityType.PLANT:
+                        return False
+                    elif entity.entity_type == EntityType.PROJECTILE:
                         if self.block_all: return False
                         p_type = star_string("").parse(entity.entity)
                         if p_type in self.blacklist:
