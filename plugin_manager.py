@@ -54,6 +54,7 @@ class PluginManager(object):
         self.base_class = base_class
         self.factory = factory
         self.load_order = []
+        self.active_plugins = []
         #self.plugin_dir = os.path.realpath(self.config.plugin_path)
         self.plugin_dir = path.child(self.config.plugin_path)
         sys.path.append(self.plugin_dir.path)
@@ -136,12 +137,13 @@ class PluginManager(object):
             if self.config.config['plugin_config'][plugin.name]['auto_activate']:
                 try:
                     plugin.activate()
+                    self.active_plugins.append(plugin.name)
                 except FatalPluginError as e:
                     self.logger.critical("A plugin reported a fatal error. Error: %s", str(e))
                     raise
 
     def deactivate_plugins(self):
-        for plugin in [self.plugins[x] for x in reversed(self.load_order)]:
+        for plugin in [self.plugins[x] for x in self.active_plugins]:
             plugin.deactivate()
 
     def do(self, protocol, command, data):
@@ -187,8 +189,7 @@ class PluginManager(object):
             raise PluginNotFound("No plugin with name=%s found." % name.lower())
 
     def die(self):
-        for plugin in self.plugins.itervalues():
-            plugin.deactivate()
+        self.deactivate_plugins()
 
 
 def route(func):
