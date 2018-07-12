@@ -1,3 +1,7 @@
+# NOTICE - THIS IS OLD, DON'T USE IT! This does not work with Starbound 1.0 and beyond.
+## Please use [StarryPy3k][https://github.com/StarryPy/StarryPy3k] instead
+
+
 # StarryPy
 
 StarryPy is Twisted-based plugin-driven Starbound server wrapper. It is
